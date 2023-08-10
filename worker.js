@@ -23,11 +23,17 @@ const start = (series, repetitions, timings) => {
             if (rep == repetitions) {
                 return;
             }
+            const progress = Math.round(
+                rest < restMax ? (rest / restMax) * 100 : (work / workMax) * 100
+            ),
+            progressRest = rest < restMax;
 
             if (rest < restMax) {
                 // rest tick
                 postMessage({
                     action: actions.TICK,
+                    progress,
+                    progressRest,
                     serie,
                     repetition: rep,
                     status: "REST",
@@ -38,6 +44,8 @@ const start = (series, repetitions, timings) => {
                 // rest end
                 postMessage({
                     action: actions.WORK,
+                    progress,
+                    progressRest,
                     serie,
                     repetition: rep,
                     status: "WORK",
@@ -48,6 +56,8 @@ const start = (series, repetitions, timings) => {
                 // work tick
                 postMessage({
                     action: actions.TICK,
+                    progress,
+                    progressRest,
                     serie,
                     repetition: rep,
                     status: "WORK",
@@ -58,6 +68,8 @@ const start = (series, repetitions, timings) => {
                 // work end + rep next
                 postMessage({
                     action: actions.REST,
+                    progress,
+                    progressRest,
                     serie,
                     repetition: rep + 1,
                     status: "REST",
@@ -70,6 +82,8 @@ const start = (series, repetitions, timings) => {
                 // work end + rep end + serie next
                 postMessage({
                     action: actions.END_TO_NEXT,
+                    progress,
+                    progressRest,
                     serie: serie + 1,
                     repetition: 0,
                     status: "REST",
@@ -83,7 +97,6 @@ const start = (series, repetitions, timings) => {
                 // work end + rep end + serie end
                 postMessage({ action: actions.END, counter: "TABATA DONE" });
                 stop();
-            } else {
             }
         };
         proc = setInterval(fn, timings.tick);
@@ -92,8 +105,9 @@ const start = (series, repetitions, timings) => {
             serie,
             repetition: rep,
             status: "GET READY",
-            counter: "",
+            counter: restMax - rest,
         });
+        rest++;
     }
 };
 const stop = () => {

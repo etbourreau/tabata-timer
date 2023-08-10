@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/webp" href="./favicon.webp">
         <title>TABATA Timer</title>
 
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -17,21 +18,12 @@
             integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
             crossorigin="anonymous"
         ></script>
-        <style>
-            html, body, #app {
-                width: 100vw;
-                height: 100dvh;
-                overflow-x: hidden;
-            }
-            body, input {
-                background-color: #333;
-                color: #CCC;
-                border-color: #DDD;
-            }
-        </style>
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <div id="app"></div>
+        <script src="cmp-circle-progress.js"></script>
         <script src="app.js"></script>
     </body>
 </html>
