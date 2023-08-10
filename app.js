@@ -280,8 +280,8 @@ createApp({
                 }" @click="active ? onStop() : onStart()">{{ active ? "Stop" : "Start" }}</button>
             </div>
             <div v-if="active" class="flex-grow-0 w-100 d-flex justify-content-evenly align-items-center pt-2">
-                <h4>Serie {{livedata.serie + 1}}/series</h4>
-                <h4>Repetition {{livedata.repetition + 1}}/repetitions</h4>
+                <h4>Serie {{livedata.serie + 1}}/{{series}}</h4>
+                <h4>Repetition {{livedata.repetition + 1}}/{{repetitions}}</h4>
             </div>
             <div v-if="active"
                 class="flex-grow-1 w-100 d-flex justify-content-center align-items-center">
