@@ -75,9 +75,10 @@ const start = (series, repetitions, timings) => {
                     status: "REST",
                     counter: restMax,
                 });
-                rep++;
                 rest = 0;
                 work = 0;
+                rep++;
+                rest++;
             } else if (rep + 1 == repetitions && serie + 1 < series) {
                 // work end + rep end + serie next
                 postMessage({
