@@ -143,8 +143,8 @@ createApp({
                     }, 1);
                     break;
                 case actions.END_TO_NEXT:
-                    this.livedata.timeStart = null;
-                    this.livedata.timeEnd = null;
+                    this.statusRest = true;
+                    initProgressTimes();
                     this.livedata.progressColor = "#198754";
                     setTimeout(async () => {
                         await this.playSound(audioFiles.END);

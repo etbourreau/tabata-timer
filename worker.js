@@ -23,17 +23,11 @@ const start = (series, repetitions, timings) => {
             if (rep == repetitions) {
                 return;
             }
-            const progress = Math.round(
-                rest < restMax ? (rest / restMax) * 100 : (work / workMax) * 100
-            ),
-            progressRest = rest < restMax;
 
             if (rest < restMax) {
                 // rest tick
                 postMessage({
                     action: actions.TICK,
-                    progress,
-                    progressRest,
                     serie,
                     repetition: rep,
                     status: "REST",
@@ -44,8 +38,6 @@ const start = (series, repetitions, timings) => {
                 // rest end
                 postMessage({
                     action: actions.WORK,
-                    progress,
-                    progressRest,
                     serie,
                     repetition: rep,
                     status: "WORK",
@@ -56,8 +48,6 @@ const start = (series, repetitions, timings) => {
                 // work tick
                 postMessage({
                     action: actions.TICK,
-                    progress,
-                    progressRest,
                     serie,
                     repetition: rep,
                     status: "WORK",
@@ -68,8 +58,6 @@ const start = (series, repetitions, timings) => {
                 // work end + rep next
                 postMessage({
                     action: actions.REST,
-                    progress,
-                    progressRest,
                     serie,
                     repetition: rep + 1,
                     status: "REST",
@@ -83,17 +71,16 @@ const start = (series, repetitions, timings) => {
                 // work end + rep end + serie next
                 postMessage({
                     action: actions.END_TO_NEXT,
-                    progress,
-                    progressRest,
                     serie: serie + 1,
                     repetition: 0,
                     status: "REST",
-                    counter: "NEXT SERIE",
+                    counter: restMax,
                 });
                 rest = 0;
                 work = 0;
                 rep = 0;
                 serie++;
+                rest++;
             } else if (rep + 1 == repetitions && serie + 1 == series) {
                 // work end + rep end + serie end
                 postMessage({ action: actions.END, counter: "TABATA DONE" });
@@ -118,18 +105,13 @@ const stop = () => {
     }
 };
 
-onmessage = (payload) => {
-    switch (payload.data.action) {
-        case actions.START:
-            start(
-                payload.data.series,
-                payload.data.repetitions,
-                payload.data.timings
-            );
-            break;
-        case actions.STOP:
-            stop();
-            postMessage({ action: actions.END });
-            break;
-    }
+onmessage = ({ data }) => {
+  const { action, series, repetitions, timings } = data;
+  
+  if (action === actions.START) {
+    start(series, repetitions, timings);
+  } else if (action === actions.STOP) {
+    stop();
+    postMessage({ action: actions.END });
+  }
 };
